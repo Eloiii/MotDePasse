@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(npm install *)",
+      "Bash(node --test server/)",
+      "Bash(node --test server/game.test.ts)",
+      "Bash(node -e ' *)",
+      "Bash(sed -i 's/<html lang=\"en\">/<html lang=\"fr\">/; s#<title>mdp</title>#<title>Mot de passe</title>#' index.html)",
+      "Bash(npm run *)",
+      "Bash(grep -v \"^\\\\s*$\")",
+      "Bash(npm test *)",
+      "Bash(PORT=3055 node server/index.ts)",
+      "Bash(chrome-devtools new_page \"http://localhost:3055/\" --isolatedContext alice)",
+      "Bash(python -)",
+      "Bash(netstat -ano)",
+      "Bash(tasklist //FI \"PID eq 28544\")",
+      "Bash(wmic process *)"
+    ]
+  }
+}
