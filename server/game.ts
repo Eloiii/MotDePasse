@@ -27,7 +27,9 @@ export function validateClue(clue: string, word: string): string | null {
   if (!c) return 'L’indice est vide.'
   if (/\s/.test(c)) return 'Un seul mot par indice !'
   if (c.length > 30) return 'Indice trop long.'
-  const parts = normalize(word).split(/[\s-]+/)
+  // In "barbe à papa", ignore short linking words ("à", "de", "en"), otherwise any clue with an "a" is refused.
+  const all = normalize(word).split(/[\s-]+/)
+  const parts = all.length > 1 ? all.filter((p) => p.length >= 3) : all
   for (const part of parts) {
     if (c.includes(part) || (c.length >= 3 && part.includes(c))) {
       return 'Interdit : l’indice ressemble trop au mot à deviner !'

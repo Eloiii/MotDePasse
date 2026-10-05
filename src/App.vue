@@ -64,7 +64,7 @@ async function copyLink() {
         <ul>
           <li>Deux joueurs, six mots : chacun devine trois mots, à tour de rôle.</li>
           <li>Celui qui connaît le mot donne un indice d’<strong>un seul mot</strong>, puis son partenaire propose une réponse.</li>
-          <li>On alterne indice / réponse jusqu’à trouver le mot… en <strong>30 secondes</strong> maximum !</li>
+          <li>On alterne indice / réponse jusqu’à trouver le mot… en <strong>1 minute</strong> maximum !</li>
           <li>Plus le mot est trouvé vite, plus il rapporte : 5 points au premier indice, puis 4, 3, 2, 1.</li>
           <li>Entre deux mots, cliquez sur « Prêt » : le mot suivant démarre quand vous êtes prêts tous les deux.</li>
         </ul>

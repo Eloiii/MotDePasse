@@ -1,7 +1,7 @@
 // Types shared between the server and the Vue client.
 
 export const ROUNDS_PER_GAME = 6
-export const ROUND_DURATION_MS = 30_000
+export const ROUND_DURATION_MS = 60_000
 export const CHAT_HISTORY_SIZE = 50
 export const CHAT_MESSAGE_MAX_LENGTH = 200
 

@@ -7,7 +7,7 @@ Le jeu télévisé « Mot de passe », jouable en ligne à deux.
 - Deux joueurs, six mots par partie : chacun devine **3 mots**, en alternance (A, B, A, B, A, B).
 - Le joueur qui voit le mot donne un indice d’**un seul mot** (interdit d’utiliser le mot lui-même ou un mot qui le contient).
 - Son partenaire propose une réponse. Si c’est faux, nouvel indice, et ainsi de suite.
-- **30 secondes** maximum par mot.
+- **1 minute** maximum par mot.
 - Le jeu est coopératif : mot trouvé au 1er indice = 5 points, puis 4, 3, 2, 1.
 - Entre deux mots, chaque joueur clique sur « Prêt » : le mot suivant démarre quand les deux sont prêts.
 - Un petit chat (bulle 💬 en bas à droite) permet de discuter entre les manches ; il est fermé pendant qu’un mot est en jeu.

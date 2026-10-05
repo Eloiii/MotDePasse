@@ -56,6 +56,9 @@ test('clues must be a single word not resembling the answer', () => {
   assert.match(validateClue('gros animal', 'éléphant')!, /seul mot/)
   assert.match(validateClue('elephanteau', 'éléphant')!, /Interdit/)
   assert.match(validateClue('photo', 'appareil photo')!, /Interdit/)
+  assert.equal(validateClue('manège', 'barbe à papa'), null)
+  assert.equal(validateClue('ciel', 'arc-en-ciel') !== null, true)
+  assert.match(validateClue('papa', 'barbe à papa')!, /Interdit/)
 })
 
 test('the dictionary accepts inflected forms, ignores accents and rejects gibberish', () => {

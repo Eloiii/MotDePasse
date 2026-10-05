@@ -15,7 +15,13 @@
       "Bash(python -)",
       "Bash(netstat -ano)",
       "Bash(tasklist //FI \"PID eq 28544\")",
-      "Bash(wmic process *)"
+      "Bash(wmic process *)",
+      "Bash(node chk-tmp.ts)",
+      "Bash(node -e \"import\\('./server/dictionary.ts'\\).then\\(d=>console.log\\(['hydre','gargouille','estampe','sarbacane','boxe','lutte','pliage'].map\\(w=>w+':'+d.isFrenchWord\\(w\\)\\).join\\(' '\\)\\)\\)\")",
+      "Bash(sed -i \"s/'sphinx', 'minotaure',/'sphinx', 'hydre',/; s/'tapisserie', 'origami',/'tapisserie', 'estampe',/; s/'karaté', 'sumo',/'karaté', 'sarbacane',/\" server/words.ts)",
+      "Bash(node -e \"import\\('./server/dictionary.ts'\\).then\\(d=>console.log\\(['cow-boy','amphithéâtre','fanfare','crème brûlée','mots croisés','fou rire','électricité','potion','hologramme','sauna'].map\\(w=>w+':'+d.isFrenchWord\\(w\\)\\).join\\('  '\\)\\)\\)\")",
+      "Bash(sed -i 's/<strong>30 secondes<\\\\/strong>/<strong>1 minute<\\\\/strong>/' src/App.vue)",
+      "Bash(sed -i 's/\\\\*\\\\*30 secondes\\\\*\\\\* maximum par mot/**1 minute** maximum par mot/' README.md)"
     ]
   }
 }
