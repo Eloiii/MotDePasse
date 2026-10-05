@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import { ROUND_DURATION_MS } from '../../server/protocol.ts'
+import { ROUND_DURATION_MS, type HistoryEntry } from '../../server/protocol.ts'
 import type { Game } from '../useGame'
 
 const props = defineProps<{ game: Game }>()
@@ -28,6 +28,16 @@ const status = computed(() => {
   if (r.phase === 'guess') return isGiver.value ? `${nameOf(r.guesser)} réfléchit` : 'À vous de deviner !'
   return ''
 })
+/** History grouped as rows: one clue and the answer it led to. */
+const exchanges = computed(() => {
+  const rows: { clue: string; guess: HistoryEntry | null }[] = []
+  for (const h of room.value.history) {
+    if (h.kind === 'clue') rows.push({ clue: h.text, guess: null })
+    else if (rows.length) rows[rows.length - 1].guess = h
+  }
+  return rows
+})
+
 const typer = computed(() => nameOf(room.value.phase === 'clue' ? room.value.clueGiver : room.value.guesser))
 const censored = computed(() => '•'.repeat(props.game.otherTyping.value))
 
@@ -134,12 +144,24 @@ function submit() {
         </template>
       </div>
 
-      <ul class="history">
-        <li v-for="(h, i) in room.history" :key="i" :class="[h.kind, { correct: h.correct }]">
-          <small>{{ h.kind === 'clue' ? 'Indice' : 'Réponse' }}</small>
-          {{ h.text }}
-        </li>
-      </ul>
+      <div v-if="room.phase !== 'reveal' || exchanges.length" class="history">
+        <div class="head">
+          <span />
+          <span :class="`tint-${room.clueGiver}`">💡 {{ nameOf(room.clueGiver) }}</span>
+          <span :class="`tint-${room.guesser}`">🔍 {{ nameOf(room.guesser) }}</span>
+        </div>
+        <ol>
+          <li v-for="(x, i) in exchanges" :key="i" :class="{ latest: i === exchanges.length - 1 }">
+            <span class="num">{{ i + 1 }}</span>
+            <span class="clue" :class="`tint-${room.clueGiver}`">{{ x.clue }}</span>
+            <span v-if="x.guess" class="guess" :class="x.guess.correct ? 'ok' : 'ko'">
+              {{ x.guess.correct ? '✓' : '✗' }} {{ x.guess.text }}
+            </span>
+            <span v-else class="guess pending">…</span>
+          </li>
+          <li v-if="!exchanges.length" class="empty">Pas encore d’indice</li>
+        </ol>
+      </div>
 
       <template v-if="room.phase !== 'reveal'">
         <p
@@ -354,48 +376,102 @@ function submit() {
 }
 
 .history {
+  font-size: 0.95rem;
+}
+
+.history .head,
+.history li {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.history .head {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0 0.4rem 0.3rem;
+  text-align: left;
+}
+
+.history ol {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  min-height: 2.6rem;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .history li {
-  padding: 0.35rem 0.8rem;
-  border-radius: 999px;
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1.1;
+  padding: 0.3rem 0.4rem;
+  border-radius: 10px;
+  text-align: left;
   animation: pop 0.25s ease;
 }
 
-.history li small {
-  font-size: 0.65rem;
-  font-weight: 500;
-  opacity: 0.8;
+.history li.latest {
+  background: #f1ebfd;
+}
+
+.history .num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-align: center;
+}
+
+.history .clue,
+.history .guess {
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .history .clue {
-  background: var(--yellow);
+  background: #fff;
   color: var(--ink);
+  border-left: 4px solid;
 }
 
-.history .guess {
-  background: #ffe0e3;
-  color: var(--red);
-  text-decoration: line-through;
+.history .clue.tint-A {
+  border-left-color: var(--orange);
 }
 
-.history .guess.correct {
+.history .clue.tint-B {
+  border-left-color: var(--teal);
+}
+
+.history .guess.ko {
+  background: #fdecee;
+  color: #b3172c;
+}
+
+.history .guess.ok {
   background: var(--green);
   color: #fff;
-  text-decoration: none;
+}
+
+.history .guess.pending {
+  color: var(--muted);
+}
+
+.history .empty {
+  display: block;
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  animation: none;
+}
+
+/* Player colours as text (A orange, B teal), matching the score bar. */
+.tint-A {
+  color: #c96f00;
+}
+
+.tint-B {
+  color: #0b8a7e;
 }
 
 .status {
